@@ -53,6 +53,7 @@
     </dependencies>
 
     <build>
+        <finalName>springboot-wxcloudrun-1.0</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
