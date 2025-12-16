@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencent.wxcloudrun.dao.WechatUserMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="WechatUserMap" type="com.tencent.wxcloudrun.model.WechatUser">
+        <id property="id" column="id"/>
+        <result property="openId" column="open_id"/>
+        <result property="unionId" column="union_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- 根据OpenID查询用户 -->
+    <select id="selectByOpenId" resultMap="WechatUserMap">
+        SELECT id, open_id, union_id, created_at, updated_at
+        FROM wechat_user
+        WHERE open_id = #{openId}
+    </select>
+
+    <!-- 插入新用户 -->
+    <insert id="insert" parameterType="com.tencent.wxcloudrun.model.WechatUser"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wechat_user (open_id, union_id)
+        VALUES (#{openId}, #{unionId})
+    </insert>
+
+    <!-- 根据ID更新用户信息 -->
+    <update id="updateById" parameterType="com.tencent.wxcloudrun.model.WechatUser">
+        UPDATE wechat_user
+        SET union_id = #{unionId}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.config.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -76,7 +77,7 @@ public class CounterController {
       counterService.clearCount(1);
       return ApiResponse.ok(0);
     } else {
-      return ApiResponse.error("参数action错误");
+      return ApiResponse.error(ResultCode.valueOf("参数action错误"));
     }
   }
   
