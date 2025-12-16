@@ -62,9 +62,8 @@ public class WechatUserServiceImpl implements WechatUserService {
         }
 
         String openId = sessionNode.get("openid").asText();
-        String unionId = sessionNode.has("unionid") ? sessionNode.get("unionid").asText() : null;
 
-        logger.info("获取到openId: {}, unionId: {}", openId, unionId);
+        logger.info("获取到openId: {}", openId);
 
         // 3. 查询数据库，检查用户是否存在
         WechatUser existingUser = wechatUserMapper.selectByOpenId(openId);
@@ -73,17 +72,11 @@ public class WechatUserServiceImpl implements WechatUserService {
         // 4. 保存或更新用户信息
         WechatUser user = new WechatUser();
         user.setOpenId(openId);
-        user.setUnionId(unionId);
 
         if (isNewUser) {
             // 新用户：插入数据库
             wechatUserMapper.insert(user);
             logger.info("新用户注册成功, userId: {}", user.getId());
-        } else {
-            // 老用户：更新unionid
-            user.setId(existingUser.getId());
-            wechatUserMapper.updateById(user);
-            logger.info("老用户登录成功, userId: {}", user.getId());
         }
 
         // 5. 构建响应（不返回敏感信息）

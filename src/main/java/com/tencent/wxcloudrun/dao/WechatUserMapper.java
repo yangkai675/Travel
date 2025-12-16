@@ -23,11 +23,4 @@ public interface WechatUserMapper {
      * @return 影响行数
      */
     int insert(WechatUser user);
-
-    /**
-     * 根据ID更新用户信息
-     * @param user 用户信息
-     * @return 影响行数
-     */
-    int updateById(WechatUser user);
 }

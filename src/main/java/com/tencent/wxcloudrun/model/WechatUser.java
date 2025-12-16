@@ -21,11 +21,6 @@ public class WechatUser implements Serializable {
     private String openId;
 
     /**
-     * 微信UnionID
-     */
-    private String unionId;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createdAt;
