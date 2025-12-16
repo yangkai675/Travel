@@ -1,13 +1,17 @@
 server:
-  port: ${PORT:80}
+  #port: ${PORT:80}
+  port: 80
 
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:ai_travel}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    #url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:ai_travel}
+    url: jdbc:mysql://10.39.103.14:3306/ai_travel?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 6zE6Tc57
+  #    username: ${MYSQL_USERNAME}
+#    password: ${MYSQL_PASSWORD}
   mvc:
     view:
       suffix: .html
@@ -17,7 +21,7 @@ mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
 # 微信小程序配置
-wechat:
-  miniapp:
-    app-id: ${WECHAT_APPID}
-    app-secret: ${WECHAT_SECRET}
+#wechat:
+#  miniapp:
+#    app-id: ${WECHAT_APPID}
+#    app-secret: ${WECHAT_SECRET}
