@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.annotation.RequireToken;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.config.ResultCode;
 import com.tencent.wxcloudrun.context.UserContext;
 import com.tencent.wxcloudrun.context.UserContextHolder;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class UserInfoController {
         UserContext context = UserContextHolder.getContext();
 
         if (context == null) {
-            return ApiResponse.error("用户上下文不存在");
+            return ApiResponse.error(ResultCode.valueOf("用户上下文不存在"));
         }
 
         Map<String, Object> contextInfo = new HashMap<>();
