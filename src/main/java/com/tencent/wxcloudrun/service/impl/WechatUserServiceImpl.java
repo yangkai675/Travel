@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.dto.WechatLoginRequest;
 import com.tencent.wxcloudrun.dto.WechatLoginResponse;
 import com.tencent.wxcloudrun.model.WechatUser;
 import com.tencent.wxcloudrun.service.WechatUserService;
+import com.tencent.wxcloudrun.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class WechatUserServiceImpl implements WechatUserService {
 
     @Autowired
     private WechatUserMapper wechatUserMapper;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -77,12 +81,26 @@ public class WechatUserServiceImpl implements WechatUserService {
             // 新用户：插入数据库
             wechatUserMapper.insert(user);
             logger.info("新用户注册成功, userId: {}", user.getId());
+        } else {
+            // 老用户：使用已存在的userId
+            user.setId(existingUser.getId());
         }
 
-        // 5. 构建响应（不返回敏感信息）
+        // 5. 生成token
+        String token;
+        try {
+            token = jwtUtil.generateToken(user.getId());
+            logger.info("生成token成功, userId: {}", user.getId());
+        } catch (Exception e) {
+            logger.error("生成token失败, userId: {}", user.getId(), e);
+            throw new RuntimeException("token生成失败");
+        }
+
+        // 6. 构建响应（不返回敏感信息）
         WechatLoginResponse response = new WechatLoginResponse();
         response.setUserId(user.getId());
         response.setIsNewUser(isNewUser);
+        response.setToken(token);
 
         return response;
     }

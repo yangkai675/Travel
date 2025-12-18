@@ -19,7 +19,13 @@ public enum ResultCode {
 
     // 用户相关返回码 (5xxxx)
     USER_NOT_FOUND(50001, "用户不存在"),
-    USER_SAVE_ERROR(50002, "用户信息保存失败");
+    USER_SAVE_ERROR(50002, "用户信息保存失败"),
+
+    // Token相关返回码 (6xxxx)
+    TOKEN_MISSING(60001, "token不能为空"),
+    TOKEN_INVALID(60002, "token无效"),
+    TOKEN_EXPIRED(60003, "token已过期"),
+    TOKEN_GENERATE_ERROR(60004, "token生成失败");
 
     /**
      * 返回码

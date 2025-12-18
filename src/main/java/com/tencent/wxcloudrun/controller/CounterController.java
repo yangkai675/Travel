@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.annotation.RequireToken;
 import com.tencent.wxcloudrun.config.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,7 @@ public class CounterController {
    * @param request {@link CounterRequest}
    * @return API response json
    */
+  @RequireToken  // 添加Token校验注解，此接口需要登录后才能访问
   @PostMapping(value = "/api/count")
   ApiResponse create(@RequestBody CounterRequest request) {
     logger.info("/api/count post request, action: {}", request.getAction());

@@ -17,4 +17,9 @@ public class WechatLoginResponse {
      * 是否是新用户
      */
     private Boolean isNewUser;
+
+    /**
+     * 登录token（用于后续接口鉴权）
+     */
+    private String token;
 }
