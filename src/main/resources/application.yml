@@ -21,3 +21,10 @@ wechat:
   miniapp:
     app-id: ${WECHAT_APPID}
     app-secret: ${WECHAT_SECRET}
+
+# 阿里云千问配置
+alibaba:
+  dashscope:
+    api-key: ${DASHSCOPE_API_KEY}
+    model: qwen-max
+    timeout: 60000

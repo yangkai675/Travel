@@ -25,7 +25,20 @@ public enum ResultCode {
     TOKEN_MISSING(60001, "token不能为空"),
     TOKEN_INVALID(60002, "token无效"),
     TOKEN_EXPIRED(60003, "token已过期"),
-    TOKEN_GENERATE_ERROR(60004, "token生成失败");
+    TOKEN_GENERATE_ERROR(60004, "token生成失败"),
+
+    // AI服务相关返回码 (7xxxx)
+    AI_SERVICE_ERROR(70001, "AI服务调用失败"),
+    AI_API_KEY_INVALID(70002, "AI API Key无效"),
+    AI_QUOTA_EXCEEDED(70003, "AI调用额度已用完"),
+    AI_TIMEOUT(70004, "AI服务响应超时"),
+    AI_CONTENT_FILTER(70005, "内容被安全过滤"),
+
+    // 旅游攻略相关返回码 (8xxxx)
+    TRAVEL_PARAM_INVALID(80001, "旅游参数不合法"),
+    TRAVEL_PLAN_GENERATE_FAIL(80002, "旅游攻略生成失败"),
+    TRAVEL_CITY_NOT_FOUND(80003, "城市信息未找到"),
+    TRAVEL_API_ERROR(80004, "旅游API调用失败");
 
     /**
      * 返回码
