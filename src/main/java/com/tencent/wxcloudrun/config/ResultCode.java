@@ -38,7 +38,17 @@ public enum ResultCode {
     TRAVEL_PARAM_INVALID(80001, "旅游参数不合法"),
     TRAVEL_PLAN_GENERATE_FAIL(80002, "旅游攻略生成失败"),
     TRAVEL_CITY_NOT_FOUND(80003, "城市信息未找到"),
-    TRAVEL_API_ERROR(80004, "旅游API调用失败");
+    TRAVEL_API_ERROR(80004, "旅游API调用失败"),
+
+    // 收藏相关返回码 (9xxxx)
+    COLLECTION_ALREADY_EXISTS(90001, "收藏已存在"),
+    COLLECTION_NOT_FOUND(90002, "收藏不存在"),
+    COLLECTION_NO_PERMISSION(90003, "无权限访问该收藏"),
+    COLLECTION_LIST_EMPTY(90004, "收藏列表为空"),
+    COLLECTION_SAVE_ERROR(90005, "收藏保存失败"),
+    COLLECTION_TITLE_EMPTY(90006, "收藏标题不能为空"),
+    COLLECTION_HISTORY_EXPIRED(90007, "攻略已过期,请重新生成"),
+    COLLECTION_HISTORY_NOT_FOUND(90007, "攻略已过期,请重新生成");
 
     /**
      * 返回码

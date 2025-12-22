@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.annotation.RequireToken;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.config.ResultCode;
+import com.tencent.wxcloudrun.context.UserContextHolder;
 import com.tencent.wxcloudrun.dto.travel.TravelPlanResponse;
 import com.tencent.wxcloudrun.dto.travel.TravelRequest;
 import com.tencent.wxcloudrun.service.TravelPlanService;
@@ -24,7 +25,7 @@ public class TravelPlanController {
     private TravelPlanService travelPlanService;
 
     /**
-     * 生成旅游攻略接口
+     * 生成旅游攻略接口(修改为支持保存历史记录)
      * POST /api/travel/plan/generate
      */
     @RequireToken
@@ -41,11 +42,14 @@ public class TravelPlanController {
             return ApiResponse.error(ResultCode.TRAVEL_PARAM_INVALID);
         }
 
-        // 调用服务生成攻略
-        TravelPlanResponse response = travelPlanService.generateTravelPlan(request);
+        // 获取用户ID
+        Integer userId = UserContextHolder.getUserId();
+
+        // 调用服务生成攻略并保存历史
+        TravelPlanResponse response = travelPlanService.generateAndSaveHistory(request, userId);
 
         if (response.getSuccess()) {
-            logger.info("旅游攻略生成成功, requestId: {}", response.getRequestId());
+            logger.info("旅游攻略生成成功, requestId: {}, canCollect: {}", response.getRequestId(), response.getCanCollect());
             return ApiResponse.ok(response);
         } else {
             logger.error("旅游攻略生成失败: {}", response.getErrorMessage());

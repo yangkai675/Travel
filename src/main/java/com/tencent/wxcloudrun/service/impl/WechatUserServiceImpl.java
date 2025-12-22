@@ -3,7 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tencent.wxcloudrun.config.WechatConfig;
-import com.tencent.wxcloudrun.dao.WechatUserMapper;
+import com.tencent.wxcloudrun.mapper.WechatUserMapper;
 import com.tencent.wxcloudrun.dto.WechatLoginRequest;
 import com.tencent.wxcloudrun.dto.WechatLoginResponse;
 import com.tencent.wxcloudrun.model.WechatUser;

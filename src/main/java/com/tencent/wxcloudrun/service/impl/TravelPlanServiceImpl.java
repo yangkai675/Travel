@@ -4,12 +4,17 @@ import com.tencent.wxcloudrun.dto.ai.QwenRequest;
 import com.tencent.wxcloudrun.dto.ai.QwenResponse;
 import com.tencent.wxcloudrun.dto.travel.TravelPlanResponse;
 import com.tencent.wxcloudrun.dto.travel.TravelRequest;
+import com.tencent.wxcloudrun.mapper.TravelPlanHistoryMapper;
+import com.tencent.wxcloudrun.model.TravelPlanHistory;
 import com.tencent.wxcloudrun.service.QwenService;
 import com.tencent.wxcloudrun.service.TravelPlanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 旅游攻略生成服务实现类
@@ -21,6 +26,9 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Autowired
     private QwenService qwenService;
+
+    @Autowired
+    private TravelPlanHistoryMapper historyMapper;
 
     @Override
     public TravelPlanResponse generateTravelPlan(TravelRequest request) {
@@ -69,6 +77,49 @@ public class TravelPlanServiceImpl implements TravelPlanService {
             logger.error("旅游攻略生成异常", e);
             response.setSuccess(false);
             response.setErrorMessage("系统错误: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public TravelPlanResponse generateAndSaveHistory(TravelRequest request, Integer userId) {
+        logger.info("用户 {} 生成攻略并保存历史", userId);
+
+        // 1. 生成攻略
+        TravelPlanResponse response = generateTravelPlan(request);
+
+        // 2. 如果生成成功,保存到历史表
+        if (response.getSuccess()) {
+            try {
+                TravelPlanHistory history = new TravelPlanHistory();
+                history.setUserId(userId);
+                history.setRequestId(response.getRequestId());
+                history.setFromCity(request.getFromCity());
+                history.setToCity(request.getToCity());
+                history.setDays(request.getDays());
+                history.setStartDate(request.getStartDate());
+                history.setPeople(request.getPeople());
+                history.setTransport(request.getTransport());
+                history.setBudget(BigDecimal.valueOf(request.getBudget()));
+                history.setSpecialNeeds(request.getSpecialNeeds());
+                history.setPlanContent(response.getPlanContent());
+                history.setTotalTokens(response.getTotalTokens());
+
+                // 设置7天后过期
+                history.setExpireAt(LocalDateTime.now().plusDays(7));
+
+                historyMapper.insert(history);
+
+                // 标记可收藏
+                response.setCanCollect(true);
+
+                logger.info("攻略历史保存成功, requestId: {}, userId: {}", response.getRequestId(), userId);
+            } catch (Exception e) {
+                logger.error("攻略历史保存失败", e);
+                // 不影响返回结果,只是无法收藏
+                response.setCanCollect(false);
+            }
         }
 
         return response;

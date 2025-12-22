@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.mapper.TravelPlanHistoryMapper">
+
+    <resultMap id="travelPlanHistoryMapper" type="com.tencent.wxcloudrun.model.TravelPlanHistory">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="requestId" column="request_id"/>
+        <result property="fromCity" column="from_city"/>
+        <result property="toCity" column="to_city"/>
+        <result property="days" column="days"/>
+        <result property="startDate" column="start_date"/>
+        <result property="people" column="people"/>
+        <result property="transport" column="transport"/>
+        <result property="budget" column="budget"/>
+        <result property="specialNeeds" column="special_needs"/>
+        <result property="planContent" column="plan_content"/>
+        <result property="totalTokens" column="total_tokens"/>
+        <result property="expireAt" column="expire_at" javaType="java.time.LocalDateTime"/>
+        <result property="createdAt" column="created_at" javaType="java.time.LocalDateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.tencent.wxcloudrun.model.TravelPlanHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `travel_plan_history` (
+            `user_id`, `request_id`, `from_city`, `to_city`, `days`, `start_date`,
+            `people`, `transport`, `budget`, `special_needs`, `plan_content`,
+            `total_tokens`, `expire_at`
+        ) VALUES (
+            #{userId}, #{requestId}, #{fromCity}, #{toCity}, #{days}, #{startDate},
+            #{people}, #{transport}, #{budget}, #{specialNeeds}, #{planContent},
+            #{totalTokens}, #{expireAt}
+        )
+    </insert>
+
+    <select id="selectByRequestId" resultMap="travelPlanHistoryMapper" parameterType="java.lang.String">
+        SELECT `id`, `user_id`, `request_id`, `from_city`, `to_city`, `days`, `start_date`,
+               `people`, `transport`, `budget`, `special_needs`, `plan_content`,
+               `total_tokens`, `expire_at`, `created_at`
+        FROM `travel_plan_history`
+        WHERE `request_id` = #{requestId}
+        LIMIT 1
+    </select>
+
+    <delete id="deleteExpired">
+        DELETE FROM `travel_plan_history` WHERE `expire_at` &lt; NOW()
+    </delete>
+
+</mapper>

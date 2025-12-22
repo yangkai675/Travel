@@ -32,4 +32,9 @@ public class TravelPlanResponse {
      * 错误信息
      */
     private String errorMessage;
+
+    /**
+     * 是否可收藏(已保存到历史表)
+     */
+    private Boolean canCollect;
 }

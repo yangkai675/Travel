@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.mapper.TravelCollectionMapper">
+
+    <resultMap id="travelCollectionMapper" type="com.tencent.wxcloudrun.model.TravelCollection">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="title" column="title"/>
+        <result property="fromCity" column="from_city"/>
+        <result property="toCity" column="to_city"/>
+        <result property="days" column="days"/>
+        <result property="startDate" column="start_date"/>
+        <result property="people" column="people"/>
+        <result property="transport" column="transport"/>
+        <result property="budget" column="budget"/>
+        <result property="specialNeeds" column="special_needs"/>
+        <result property="planContent" column="plan_content"/>
+        <result property="aiRequestId" column="ai_request_id"/>
+        <result property="totalTokens" column="total_tokens"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createdAt" column="created_at" javaType="java.time.LocalDateTime"/>
+        <result property="updatedAt" column="updated_at" javaType="java.time.LocalDateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.tencent.wxcloudrun.model.TravelCollection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `travel_plan_collection` (
+            `user_id`, `title`, `from_city`, `to_city`, `days`, `start_date`,
+            `people`, `transport`, `budget`, `special_needs`, `plan_content`,
+            `ai_request_id`, `total_tokens`, `is_deleted`
+        ) VALUES (
+            #{userId}, #{title}, #{fromCity}, #{toCity}, #{days}, #{startDate},
+            #{people}, #{transport}, #{budget}, #{specialNeeds}, #{planContent},
+            #{aiRequestId}, #{totalTokens}, #{isDeleted}
+        )
+    </insert>
+
+    <select id="selectById" resultMap="travelCollectionMapper" parameterType="java.lang.Long">
+        SELECT `id`, `user_id`, `title`, `from_city`, `to_city`, `days`, `start_date`,
+               `people`, `transport`, `budget`, `special_needs`, `plan_content`,
+               `ai_request_id`, `total_tokens`, `is_deleted`, `created_at`, `updated_at`
+        FROM `travel_plan_collection`
+        WHERE `id` = #{id} AND `is_deleted` = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectByUserId" resultMap="travelCollectionMapper">
+        SELECT `id`, `user_id`, `title`, `from_city`, `to_city`, `days`, `start_date`,
+               `people`, `transport`, `budget`, `special_needs`, `plan_content`,
+               `ai_request_id`, `total_tokens`, `is_deleted`, `created_at`, `updated_at`
+        FROM `travel_plan_collection`
+        WHERE `user_id` = #{userId} AND `is_deleted` = 0
+        ORDER BY `created_at` DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `travel_plan_collection`
+        WHERE `user_id` = #{userId} AND `is_deleted` = 0
+    </select>
+
+    <update id="updateTitle">
+        UPDATE `travel_plan_collection`
+        SET `title` = #{title}
+        WHERE `id` = #{id}
+    </update>
+
+    <update id="updateDeleteStatus">
+        UPDATE `travel_plan_collection`
+        SET `is_deleted` = #{isDeleted}
+        WHERE `id` = #{id}
+    </update>
+
+</mapper>
