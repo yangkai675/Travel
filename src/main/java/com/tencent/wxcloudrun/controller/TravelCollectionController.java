@@ -110,10 +110,10 @@ public class TravelCollectionController {
 
     /**
      * 获取收藏详情
-     * GET /api/travel/collection/{id}
+     * GET /api/travel/collection/detail/{id}
      */
     @RequireToken
-    @GetMapping("/collection/{id}")
+    @GetMapping("/collection/detail/{id}")
     public ApiResponse getCollectionDetail(@PathVariable Long id) {
         logger.info("获取收藏详情, id: {}", id);
 
